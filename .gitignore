@@ -1,0 +1,8 @@
+.DS_Store
+.vagrant
+*.log
+vendor
+*.retry
+roles/*
+!roles/.gitkeep
+group_vars/all/secret.yml

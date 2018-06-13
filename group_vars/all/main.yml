@@ -1,0 +1,37 @@
+---
+droplet_name: test-droplet
+droplet_region_id: sgp1
+droplet_size_id: 512mb
+droplet_image_id: ubuntu-18-04-x64
+
+users:
+  - username: foobaring
+    name: Foo Baring
+    authorized_keys:
+      - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    shell: /bin/bash
+    password: '{% if upassword is defined %}{{ upassword | password_hash("sha512") }}{% else %}{{ None }}{% endif %}'
+    update_password: on_create
+    groups:
+      - sudo
+
+swapfile_size: 1GB
+swapfile_swappiness: 10
+swapfile_vfs_cache_pressure: 50
+
+ntp_timezone: Etc/UTC
+ntp_manage_config: true
+
+sshd:
+  PermitRootLogin: no
+  PasswordAuthentication: no
+
+ufw_rules:
+  - { port: 22, rule: allow }
+  - { port: 80, rule: allow }
+  - { port: 443, rule: allow }
+ufw_default_forward_policy: ACCEPT
+ufw_logging: full
+ufw_applications:
+  - { name: "OpenSSH" }
+ufw_reset: no
