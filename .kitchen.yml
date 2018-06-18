@@ -1,0 +1,35 @@
+---
+driver:
+  name: vagrant
+  use_sudo: false
+
+platforms:
+  - name: ubuntu-14.04
+  - name: ubuntu-16.04
+  - name: ubuntu-18.04
+
+provisioner:
+  hosts: test-kitchen
+  name: ansible_playbook
+  require_chef_for_busser: false
+  ansible_verbosity: 2
+  ansible_verbose: true
+  requirements_path: requirements.yml
+  ignore_ansible_cfg: true
+  idempotency_test: true
+
+verifier:
+  name: serverspec
+  use_sudo: yes
+  sudo_path: true
+
+suites:
+  - name: default
+    driver:
+      provision: True
+      vagrantfiles:
+        - ubuntu_provision.rb
+    verifier:
+      default_pattern: true
+      bundler_path: '/usr/local/bin'
+      rspec_path: '/usr/local/bin'
