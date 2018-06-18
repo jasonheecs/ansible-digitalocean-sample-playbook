@@ -1,0 +1,21 @@
+---
+language: python
+python: "2.7"
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq python-apt python-pycurl
+
+install:
+  - pip install ansible
+
+script:
+  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
+  - ansible-galaxy install -r requirements.yml
+  - "printf 'localhost' > test/inventory"
+  - ansible-playbook -i test/inventory --syntax-check test/integration/default/default.yml
+  - ansible-playbook -i test/inventory --connection=local --become -vvvv  --skip-tags "users,sshd" test/integration/default/default.yml
+
+notifications:
+  email: false
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

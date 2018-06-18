@@ -1,15 +1,4 @@
 ---
-# - hosts: do_droplet_in_memory
-#   gather_facts: no
-#   become: no
-#   tasks:
-#     - pause:
-#         prompt: Enter password for new user account (Leave blank if you do not wish to set a password)
-#       register: new_user_password
-#       when: upassword is not defined
-#     - set_fact: upassword={{ new_user_password.user_input }}
-#       when: new_user_password.user_input is defined
-
 - hosts: localhost
   gather_facts: no
   become: no
