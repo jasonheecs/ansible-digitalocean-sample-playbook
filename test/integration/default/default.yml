@@ -1,0 +1,34 @@
+---
+# - hosts: do_droplet_in_memory
+#   gather_facts: no
+#   become: no
+#   tasks:
+#     - pause:
+#         prompt: Enter password for new user account (Leave blank if you do not wish to set a password)
+#       register: new_user_password
+#       when: upassword is not defined
+#     - set_fact: upassword={{ new_user_password.user_input }}
+#       when: new_user_password.user_input is defined
+
+- hosts: localhost
+  gather_facts: no
+  become: no
+  roles:
+    - { role: python-raw }
+
+- hosts: localhost
+  become: yes
+  roles:
+    - { role: swapfile, tags: [swapfile] }
+    - { role: fail2ban, tags: [fail2ban] }
+    - { role: ufw, tags: [ufw] }
+    - { role: ntp, tags: [ntp] }
+    - { role: users, tags: [users] }
+    - { role: unattended-upgrades, tags: [unattended-upgrades] }
+    - { role: sshd, tags: [sshd] }
+  vars:
+    - users:
+      - username: foobar
+        name: Foo Bar
+        groups:
+          - sudo
