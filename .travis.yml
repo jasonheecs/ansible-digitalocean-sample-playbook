@@ -15,7 +15,7 @@ script:
   - "printf 'localhost' > test/inventory"
   - ansible-playbook -i test/inventory --syntax-check test/integration/default/default.yml
   - ansible-playbook -i test/inventory --connection=local --become -vvvv  --skip-tags "users,sshd" test/integration/default/default.yml
+  - bundle exec KITCHEN_YAML=".kitchen.travis.yml" kitchen test -c
 
 notifications:
   email: false
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/

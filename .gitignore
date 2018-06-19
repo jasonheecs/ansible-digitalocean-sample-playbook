@@ -6,3 +6,4 @@ vendor
 roles/*
 !roles/.gitkeep
 group_vars/all/secret.yml
+.kitchen

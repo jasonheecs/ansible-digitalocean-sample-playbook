@@ -1,6 +1,6 @@
 - name: digitalocean
   src: jasonheecs.digitalocean
-  version: 1.1.1
+  version: 1.2.0
 
 - name: python-raw
   src: jasonheecs.ubuntu-python-raw
@@ -12,7 +12,7 @@
 
 - name: fail2ban
   src: jasonheecs.ubuntu-fail2ban
-  version: 1.0.2
+  version: 1.1.0
 
 - name: ufw
   src: franklinkim.ufw

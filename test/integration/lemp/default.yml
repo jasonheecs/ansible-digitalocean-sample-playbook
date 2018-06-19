@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+    - include: tasks/lemp.yml
+    - name: Start Nginx for Docker
+      command: nginx
+      changed_when: false

@@ -3,7 +3,7 @@
   connection: local
   become: no
   roles:
-    - { role: digitalocean }
+    - { role: digitalocean, tags: [digitalocean] }
   tasks:
     - pause:
         seconds: 3 # wait for droplet to be ready
@@ -36,6 +36,16 @@
     - { role: python-raw }
 
 - hosts: do_droplet_in_memory
+  become: no
+  gather_facts: true
+  tasks:
+    - name: Get local machine's IP address
+      set_fact:
+        local_machine_ip: "{{ ansible_env['SSH_CLIENT'].split() | first }}"
+  vars:
+    - ansible_python_interpreter: /usr/bin/python3
+
+- hosts: do_droplet_in_memory
   become: yes
   gather_facts: true
   roles:
@@ -48,6 +58,7 @@
     - { role: sshd, tags: [sshd] }
   vars:
     - ansible_python_interpreter: /usr/bin/python3
+    - fail2ban_ip_whitelist: "{{ local_machine_ip }}"
 
 - hosts: do_droplet_in_memory
   become: yes
