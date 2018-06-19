@@ -33,3 +33,19 @@
 - name: sshd
   src: willshersystems.sshd
   version: v0.6.1
+
+- name: nginx
+  src: geerlingguy.nginx
+  version: 2.6.0
+
+- name: php
+  src: geerlingguy.php
+  version: 3.6.0
+
+- name: mysql
+  src: geerlingguy.mysql
+  version: 2.9.0
+
+- name: php-mysql
+  src: geerlingguy.php-mysql
+  version: 2.0.1

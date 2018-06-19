@@ -4,17 +4,30 @@
   become: no
   roles:
     - { role: digitalocean }
-
-- hosts: do_droplet_in_memory
-  gather_facts: no
-  become: no
   tasks:
     - pause:
-        prompt: Enter password for new user account (Leave blank if you do not wish to set a password)
-      register: new_user_password
-      when: upassword is not defined
-    - set_fact: upassword={{ new_user_password.user_input }}
-      when: new_user_password.user_input is defined
+        seconds: 3 # wait for droplet to be ready
+
+- hosts: do_droplet_in_memory
+  gather_facts: false
+  become: no
+  tasks:
+    - block:
+      - local_action: shell cat ~/.ssh/known_hosts | grep -qF {{ ansible_ssh_host }}
+        register: known_hosts_exists
+        ignore_errors: yes
+      - local_action: shell ssh-keyscan {{ ansible_ssh_host }} >> ~/.ssh/known_hosts
+        when: known_hosts_exists.rc != 0
+      tags: ssh-keyscan
+
+- hosts: do_droplet_in_memory
+  name: Test Connection and Determine Remote User
+  gather_facts: false
+  roles:
+    - { role: connection, tags: [connection] }
+  vars:
+    - ansible_python_interpreter: /usr/bin/python3
+    - local_python_interpreter: "{{ ansible_playbook_python }}"
 
 - hosts: do_droplet_in_memory
   gather_facts: no
@@ -24,6 +37,7 @@
 
 - hosts: do_droplet_in_memory
   become: yes
+  gather_facts: true
   roles:
     - { role: swapfile, tags: [swapfile] }
     - { role: fail2ban, tags: [fail2ban] }
@@ -34,3 +48,13 @@
     - { role: sshd, tags: [sshd] }
   vars:
     - ansible_python_interpreter: /usr/bin/python3
+
+- hosts: do_droplet_in_memory
+  become: yes
+  vars_prompt:
+    - name: install_lemp
+      prompt: Do you want to install the LEMP stack (y/n)?
+      private: no
+  tasks:
+    - include: tasks/lemp.yml
+      when: install_lemp == 'y'

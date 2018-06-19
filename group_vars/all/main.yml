@@ -10,7 +10,7 @@ users:
     authorized_keys:
       - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
     shell: /bin/bash
-    password: '{% if upassword is defined %}{{ upassword | password_hash("sha512") }}{% else %}{{ None }}{% endif %}'
+    password: '{% if user_acct_password is defined %}{{ user_acct_password | password_hash("sha512") }}{% else %}{{ None }}{% endif %}'
     update_password: on_create
     groups:
       - sudo
