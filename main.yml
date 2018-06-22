@@ -4,21 +4,16 @@
   become: no
   roles:
     - { role: digitalocean, tags: [digitalocean] }
-  tasks:
-    - pause:
-        seconds: 3 # wait for droplet to be ready
 
-- hosts: do_droplet_in_memory
-  gather_facts: false
+- hosts: localhost
+  connection: local
   become: no
+  gather_facts: false
   tasks:
-    - block:
-      - local_action: shell cat ~/.ssh/known_hosts | grep -qF {{ ansible_ssh_host }}
-        register: known_hosts_exists
-        ignore_errors: yes
-      - local_action: shell ssh-keyscan {{ ansible_ssh_host }} >> ~/.ssh/known_hosts
-        when: known_hosts_exists.rc != 0
-      tags: ssh-keyscan
+    - name: Waiting for droplet DNS to propagate
+      pause:
+        seconds: 30
+      when: droplet.changed
 
 - hosts: do_droplet_in_memory
   name: Test Connection and Determine Remote User
@@ -60,12 +55,14 @@
     - ansible_python_interpreter: /usr/bin/python3
     - fail2ban_ip_whitelist: "{{ local_machine_ip }}"
 
-- hosts: do_droplet_in_memory
-  become: yes
-  vars_prompt:
-    - name: install_lemp
-      prompt: Do you want to install the LEMP stack (y/n)?
-      private: no
-  tasks:
-    - include: tasks/lemp.yml
-      when: install_lemp == 'y'
+# - hosts: do_droplet_in_memory
+#   become: yes
+#   vars_prompt:
+#     - name: install_lemp
+#       prompt: Do you want to install the LEMP stack (y/n)?
+#       private: no
+#   tasks:
+#     - include: tasks/lemp.yml
+#       when: install_lemp == 'y'
+#   vars:
+#     - ansible_ssh_user: "{{ (users|first).username }}"
