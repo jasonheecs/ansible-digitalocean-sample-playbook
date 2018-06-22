@@ -37,6 +37,7 @@
     - name: Get local machine's IP address
       set_fact:
         local_machine_ip: "{{ ansible_env['SSH_CLIENT'].split() | first }}"
+      changed_when: false
   vars:
     - ansible_python_interpreter: /usr/bin/python3
 
@@ -53,16 +54,17 @@
     - { role: sshd, tags: [sshd] }
   vars:
     - ansible_python_interpreter: /usr/bin/python3
-    - fail2ban_ip_whitelist: "{{ local_machine_ip }}"
+    - fail2ban_ip_whitelist: "{{ local_machine_ip }}/8"
 
-# - hosts: do_droplet_in_memory
-#   become: yes
-#   vars_prompt:
-#     - name: install_lemp
-#       prompt: Do you want to install the LEMP stack (y/n)?
-#       private: no
-#   tasks:
-#     - include: tasks/lemp.yml
-#       when: install_lemp == 'y'
-#   vars:
-#     - ansible_ssh_user: "{{ (users|first).username }}"
+- hosts: do_droplet_in_memory
+  become: yes
+  vars_prompt:
+    - name: install_lemp
+      prompt: Do you want to install the LEMP stack (y/n)?
+      private: no
+  tasks:
+    - include: tasks/lemp.yml
+      when: install_lemp == 'y'
+  vars:
+    - ansible_ssh_user: "{{ (users|first).username }}"
+    - ansible_become_pass: "{{ user_acct_password }}"

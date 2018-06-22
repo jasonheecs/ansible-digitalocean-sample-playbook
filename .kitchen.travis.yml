@@ -9,9 +9,8 @@ provisioner:
   require_chef_for_busser: false
   ansible_verbosity: 2
   ansible_verbose: true
-  ansible_extra_flags: '--skip-tags=create_droplet,add_ssh_key'
   requirements_path: requirements.yml
-  idempotency_test: false
+  idempotency_test: true
   additional_copy_path: tasks
   ansible_extra_flags: --skip-tags=mysql
 

@@ -6,3 +6,4 @@
     - name: Start Nginx for Docker
       command: nginx
       changed_when: false
+      ignore_errors: yes
