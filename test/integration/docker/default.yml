@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+    - include: tasks/docker.yml
+  vars:
+    - users:
+      - username: foobar
+        name: Foo Bar

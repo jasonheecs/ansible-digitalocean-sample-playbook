@@ -62,9 +62,14 @@
     - name: install_lemp
       prompt: Do you want to install the LEMP stack (y/n)?
       private: no
+    - name: install_docker
+      prompt: Do you want to install Docker (y/n)?
+      private: no
   tasks:
     - include: tasks/lemp.yml
       when: install_lemp == 'y'
+    - include: tasks/docker.yml
+      when: install_docker == 'y'
   vars:
     - ansible_ssh_user: "{{ (users|first).username }}"
     - ansible_become_pass: "{{ user_acct_password }}"

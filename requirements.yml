@@ -49,3 +49,7 @@
 - name: php-mysql
   src: geerlingguy.php-mysql
   version: 2.0.1
+
+- name: docker
+  src: geerlingguy.docker
+  version: 2.5.0
