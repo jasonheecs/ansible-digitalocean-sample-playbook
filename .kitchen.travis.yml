@@ -1,0 +1,38 @@
+---
+driver:
+  name: docker
+  use_sudo: false
+
+provisioner:
+  hosts: test-kitchen
+  name: ansible_playbook
+  require_chef_for_busser: false
+  ansible_verbosity: 2
+  ansible_verbose: true
+  requirements_path: requirements.yml
+  idempotency_test: true
+  additional_copy_path: tasks
+  ansible_extra_flags: --skip-tags=mysql
+
+platforms:
+  - name: ubuntu-16.04
+    driver_config:
+      image: williamyeh/ansible:ubuntu16.04-onbuild
+      platform: ubuntu
+  - name: ubuntu-14.04
+    driver_config:
+      image: williamyeh/ansible:ubuntu14.04-onbuild
+      platform: ubuntu
+
+verifier:
+  name: serverspec
+
+suites:
+  - name: lemp
+    driver:
+      provision_command: 
+        - export LC_ALL=C
+    verifier:
+      default_pattern: true
+      bundler_path: '/usr/local/bin'
+      rspec_path: '/usr/local/bin'

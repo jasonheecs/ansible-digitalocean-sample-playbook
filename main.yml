@@ -3,18 +3,26 @@
   connection: local
   become: no
   roles:
-    - { role: digitalocean }
+    - { role: digitalocean, tags: [digitalocean] }
+
+- hosts: localhost
+  connection: local
+  become: no
+  gather_facts: false
+  tasks:
+    - name: Waiting for droplet DNS to propagate
+      pause:
+        seconds: 30
+      when: droplet.changed
 
 - hosts: do_droplet_in_memory
-  gather_facts: no
-  become: no
-  tasks:
-    - pause:
-        prompt: Enter password for new user account (Leave blank if you do not wish to set a password)
-      register: new_user_password
-      when: upassword is not defined
-    - set_fact: upassword={{ new_user_password.user_input }}
-      when: new_user_password.user_input is defined
+  name: Test Connection and Determine Remote User
+  gather_facts: false
+  roles:
+    - { role: connection, tags: [connection] }
+  vars:
+    - ansible_python_interpreter: /usr/bin/python3
+    - local_python_interpreter: "{{ ansible_playbook_python }}"
 
 - hosts: do_droplet_in_memory
   gather_facts: no
@@ -23,7 +31,19 @@
     - { role: python-raw }
 
 - hosts: do_droplet_in_memory
+  become: no
+  gather_facts: true
+  tasks:
+    - name: Get local machine's IP address
+      set_fact:
+        local_machine_ip: "{{ ansible_env['SSH_CLIENT'].split() | first }}"
+      changed_when: false
+  vars:
+    - ansible_python_interpreter: /usr/bin/python3
+
+- hosts: do_droplet_in_memory
   become: yes
+  gather_facts: true
   roles:
     - { role: swapfile, tags: [swapfile] }
     - { role: fail2ban, tags: [fail2ban] }
@@ -34,3 +54,17 @@
     - { role: sshd, tags: [sshd] }
   vars:
     - ansible_python_interpreter: /usr/bin/python3
+    - fail2ban_ip_whitelist: "{{ local_machine_ip }}/8"
+
+- hosts: do_droplet_in_memory
+  become: yes
+  vars_prompt:
+    - name: install_lemp
+      prompt: Do you want to install the LEMP stack (y/n)?
+      private: no
+  tasks:
+    - include: tasks/lemp.yml
+      when: install_lemp == 'y'
+  vars:
+    - ansible_ssh_user: "{{ (users|first).username }}"
+    - ansible_become_pass: "{{ user_acct_password }}"

@@ -5,9 +5,11 @@ python: "2.7"
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq python-apt python-pycurl
+  - gem install bundler
 
 install:
   - pip install ansible
+  - bundle install
 
 script:
   - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
@@ -15,7 +17,7 @@ script:
   - "printf 'localhost' > test/inventory"
   - ansible-playbook -i test/inventory --syntax-check test/integration/default/default.yml
   - ansible-playbook -i test/inventory --connection=local --become -vvvv  --skip-tags "users,sshd" test/integration/default/default.yml
+  - KITCHEN_YAML=".kitchen.travis.yml" bundle exec kitchen test -c
 
 notifications:
   email: false
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/

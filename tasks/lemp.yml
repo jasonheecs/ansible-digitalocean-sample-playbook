@@ -1,0 +1,24 @@
+---
+- name: Install Nginx
+  include_role:
+    name: nginx
+  tags: nginx
+
+- name: Add repository for PHP 7
+  apt_repository: repo='ppa:ondrej/php'
+  tags: php
+
+- name: Install PHP
+  include_role:
+    name: php
+  tags: php
+
+- name: Install MySql
+  include_role:
+    name: mysql
+  tags: mysql
+
+- name: Install PHP MySql package
+  include_role:
+    name: php-mysql
+  tags: [php, mysql]
