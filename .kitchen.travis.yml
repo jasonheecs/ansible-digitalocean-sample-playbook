@@ -36,3 +36,11 @@ suites:
       default_pattern: true
       bundler_path: '/usr/local/bin'
       rspec_path: '/usr/local/bin'
+  - name: docker
+    driver:
+      provision_command: 
+        - export LC_ALL=C
+    verifier:
+      default_pattern: true
+      bundler_path: '/usr/local/bin'
+      rspec_path: '/usr/local/bin'

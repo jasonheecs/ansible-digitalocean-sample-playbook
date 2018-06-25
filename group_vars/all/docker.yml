@@ -1,6 +1,2 @@
 ---
-docker_channel: "stable"
-docker_version: "18.03.1"
-docker_install_docker_compose: True
-docker_compose_version: "1.21.2"
 docker_users: ["{{ (users|first).username }}"]
