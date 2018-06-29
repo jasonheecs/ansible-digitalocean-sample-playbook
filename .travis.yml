@@ -2,13 +2,19 @@
 language: python
 python: "2.7"
 
+env:
+  - ANSIBLE_VERSION=latest TEST_SUITE=lemp
+  - ANSIBLE_VERSION=latest TEST_SUITE=docker
+  - ANSIBLE_VERSION=2.5.0.0 TEST_SUITE=lemp
+  - ANSIBLE_VERSION=2.4.0.0 TEST_SUITE=lemp
+
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq python-apt python-pycurl
   - gem install bundler
 
 install:
-  - pip install ansible
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install ansible==$ANSIBLE_VERSION; fi
   - bundle install
 
 script:
@@ -17,7 +23,7 @@ script:
   - "printf 'localhost' > test/inventory"
   - ansible-playbook -i test/inventory --syntax-check test/integration/default/default.yml
   - ansible-playbook -i test/inventory --connection=local --become -vvvv  --skip-tags "users,sshd" test/integration/default/default.yml
-  - KITCHEN_YAML=".kitchen.travis.yml" bundle exec kitchen test -c
+  - KITCHEN_YAML=".kitchen.travis.yml" bundle exec kitchen test ${TEST_SUITE} -c
 
 notifications:
   email: false
