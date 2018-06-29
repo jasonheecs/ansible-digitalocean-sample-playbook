@@ -3,7 +3,19 @@
   become: yes
   tasks:
     - include: tasks/lemp.yml
+
     - name: Start Nginx for Docker
       command: nginx
       changed_when: false
       ignore_errors: yes
+
+    - name: Check if iproute is installed
+      command: dpkg-query -l iproute
+      register: iproute_check
+      ignore_errors: yes
+      changed_when: false
+
+    - name: Install iproute2 package
+      apt: name=iproute2 state=present
+      when: iproute_check.stderr != ""
+      changed_when: false

@@ -15,13 +15,17 @@ provisioner:
   ansible_extra_flags: --skip-tags=mysql
 
 platforms:
+  - name: ubuntu-18.04
+    driver_config:
+      image: jasonheecs/ansible:ubuntu-18.04
+      platform: ubuntu
   - name: ubuntu-16.04
     driver_config:
-      image: williamyeh/ansible:ubuntu16.04-onbuild
+      image: jasonheecs/ansible:ubuntu-16.04
       platform: ubuntu
   - name: ubuntu-14.04
     driver_config:
-      image: williamyeh/ansible:ubuntu14.04-onbuild
+      image: jasonheecs/ansible:ubuntu-14.04
       platform: ubuntu
 
 verifier:
