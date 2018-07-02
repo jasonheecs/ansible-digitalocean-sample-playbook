@@ -4,6 +4,8 @@
 
 This is a sample playbook that illustrates how to create and provision a DigitalOcean droplet with Ansible; you can spin up and provision a droplet using the command line via this playbook.
 
+![Playbook Demo Image](https://i.imgur.com/EhheGBP.gif)
+
 This playbook does the following:
 - Spins up a DigitalOcean droplet
 - Adds the droplet's IP address to the [ansible inventory file](hosts)
