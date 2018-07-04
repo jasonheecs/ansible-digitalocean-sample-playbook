@@ -39,6 +39,7 @@ cd ansible-digitalocean-sample-playbooks
 
 4) Run the following:
 ```
+ansible-galaxy install -r requirements.yml
 ansible-playbook -i hosts main.yml
 ```
 

@@ -1,0 +1,27 @@
+---
+- name: Check whether Ansible can connect as root
+  command: ansible {{ inventory_hostname }} -m raw -a whoami -u root -vvvv
+  failed_when: false
+  changed_when: false
+  check_mode: no
+  register: connection_status
+  tags: [connection-tests]
+  delegate_to: localhost
+  vars:
+    - ansible_python_interpreter: "{{ local_python_interpreter }}"
+
+- name: Set remote user
+  set_fact:
+    ansible_ssh_user: "{{ (users|first).username }}"
+  when: connection_status.rc != 0
+  check_mode: no
+
+- name: Announce which user was selected
+  debug:
+    msg: "Note: Ansible will attempt connections as user = {{ ansible_ssh_user }}"
+
+- name: Load become password
+  set_fact:
+    ansible_become_pass: "{{ user_acct_password }}"
+  when: ansible_user != 'root' | default(false) and ansible_become_pass is not defined
+  no_log: true
