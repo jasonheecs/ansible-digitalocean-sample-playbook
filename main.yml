@@ -19,7 +19,7 @@
   name: Test Connection and Determine Remote User
   gather_facts: false
   roles:
-    - { role: connection, tags: [connection] }
+    - { role: connection, tags: [connection, always] }
   vars:
     - ansible_python_interpreter: /usr/bin/python3
     - local_python_interpreter: "{{ ansible_playbook_python }}"
