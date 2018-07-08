@@ -1,4 +1,4 @@
-# Sample Ansible Playbooks to provision a DigitalOcean droplet
+# Sample Ansible Playbook to provision a DigitalOcean droplet
 
 [![Build Status][travis-badge]][travis-link]
 
@@ -67,5 +67,5 @@ Refer to the [travis.yml](.travis.yml) file and [Travis build logs][travis-link]
 MIT
 
 
-[travis-badge]: https://travis-ci.com/jasonheecs/ansible-digitalocean-sample-playbooks.svg?branch=master
-[travis-link]: https://travis-ci.com/jasonheecs/ansible-digitalocean-sample-playbooks
+[travis-badge]: https://travis-ci.com/jasonheecs/ansible-digitalocean-sample-playbook.svg?branch=master
+[travis-link]: https://travis-ci.com/jasonheecs/ansible-digitalocean-sample-playbook
