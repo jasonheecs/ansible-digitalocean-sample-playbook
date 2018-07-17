@@ -7,7 +7,7 @@
   version: 1.0.0
 
 - name: swapfile
-  src: tersmitten.swapfile
+  src: oefenweb.swapfile
   version: v2.0.6
 
 - name: fail2ban
