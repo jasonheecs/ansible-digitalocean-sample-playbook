@@ -5,5 +5,9 @@ describe command('id -u foobar > /dev/null 2>&1; echo $?') do
 end
 
 describe command('sudo -l -U foobar') do
-  its(:stdout) { should include "(ALL : ALL) ALL" }
+  if os[:release] == '16.04'
+    its(:stdout) { should include "(ALL) NOPASSWD: ALL" }
+  else
+    its(:stdout) { should include "(ALL : ALL) ALL" }
+  end
 end
