@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'test-kitchen', '~> 1.8.0'
+gem 'test-kitchen'
 gem 'kitchen-vagrant'
 gem 'kitchen-docker'
 gem 'kitchen-ansible'
