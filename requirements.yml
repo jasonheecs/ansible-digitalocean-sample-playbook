@@ -8,7 +8,7 @@
 
 - name: swapfile
   src: oefenweb.swapfile
-  version: v2.0.6
+  version: v2.0.18
 
 - name: fail2ban
   src: jasonheecs.ubuntu-fail2ban
@@ -16,27 +16,27 @@
 
 - name: ufw
   src: weareinteractive.ufw
-  version: 1.7.1
+  version: 1.10.0
 
 - name: ntp
   src: geerlingguy.ntp
-  version: 1.6.0
+  version: 1.6.4
 
 - name: users
   src: weareinteractive.users
-  version: 1.9.2
+  version: 1.13.1
 
 - name: unattended-upgrades
   src: jnv.unattended-upgrades
-  version: v1.6.0
+  version: v1.7.1
 
 - name: sshd
   src: willshersystems.sshd
-  version: v0.6.1
+  version: v0.8.1
 
 - name: nginx
   src: geerlingguy.nginx
-  version: 2.6.0
+  version: 2.7.0
 
 - name: php
   src: geerlingguy.php
@@ -44,12 +44,12 @@
 
 - name: mysql
   src: geerlingguy.mysql
-  version: 2.9.0
+  version: 2.9.5
 
 - name: php-mysql
   src: geerlingguy.php-mysql
-  version: 2.0.1
+  version: 2.0.2
 
 - name: docker
   src: geerlingguy.docker
-  version: 2.5.0
+  version: 2.6.0
