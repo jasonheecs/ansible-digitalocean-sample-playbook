@@ -4,7 +4,6 @@ driver:
   use_sudo: false
 
 platforms:
-  # - name: ubuntu-14.04
   - name: ubuntu-16.04
   - name: ubuntu-18.04
 
